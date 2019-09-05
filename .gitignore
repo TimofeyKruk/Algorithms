@@ -11,3 +11,5 @@ CMakeLists.txt
 **/cmake-build-debug/
 *.pdf
 *.html
+**/.vs/
+**/out/
