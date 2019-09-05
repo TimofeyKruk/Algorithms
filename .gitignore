@@ -1,0 +1,13 @@
+Debug/
+.idea/
+cmake-build-debug/
+CMakeLists.txt
+*.sln
+*.vcxproj
+*.vcxproj.*
+*.h
+**/Debug/
+**/.idea/
+**/cmake-build-debug/
+*.pdf
+*.html

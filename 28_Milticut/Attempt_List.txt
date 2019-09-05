@@ -1,0 +1,122 @@
+#include <iostream>
+#include <map>
+#include <queue>
+#include <vector>
+#include <list>
+
+using namespace std;
+
+int main() {
+    FILE *fileIn = fopen("input.txt", "r");
+    FILE *fileOut = fopen("output.txt", "w");
+
+    int n, m;
+    fscanf(fileIn, "%d %d", &n, &m);
+
+    int startVertex, endVertex, weight;
+
+    //0 will be super source
+    vector<vector<pair<int,int>>> adjacencyList(n+1);
+
+    map<pair<int, int>, int> mapOfEdges;
+
+    int tempMin, tempMax;
+
+    for (int i = 0; i < m; ++i) {
+        fscanf(fileIn, " %d %d %d", &startVertex, &endVertex, &weight);
+
+        adjacencyList[startVertex].emplace_back(make_pair(endVertex,weight));
+        adjacencyList[endVertex].emplace_back(make_pair(startVertex,weight));
+
+        tempMin = std::min(startVertex, endVertex);
+        tempMax = std::max(startVertex, endVertex);
+
+        mapOfEdges[make_pair(tempMin, tempMax)] = i + 1;
+    }
+
+    int k;
+    fscanf(fileIn, "%d", &k);
+
+    vector<int> fixedVertexesArray(k);
+    for (int i = 0; i < k; ++i) {
+        fscanf(fileIn, "%d", &fixedVertexesArray[i]);
+    }
+
+    //_______Main part of algorithm__________
+    //preparing residual graph(adding fixed vertexes to super source)
+    int whereToGo;
+    int superSourceInd = 0;
+
+    for (int i = 0; i < k; ++i) {
+        whereToGo = fixedVertexesArray[i];
+        adjacencyList[superSourceInd].emplace_back(make_pair(whereToGo,INT_MAX));
+        adjacencyList[whereToGo].emplace_back(make_pair(superSourceInd,0));
+    }
+
+    int currentSink;
+    int currentVertex;
+    int vertexToGo
+    //Cycle for working with every fixed vertex as sink
+    for (int i = 0; i < k; ++i) {
+        currentSink = fixedVertexesArray[i];
+
+        //TODO: redo it,it doesn't work properly
+        //deleting edge to currentSink
+        adjacencyList[superSourceInd][currentSink].second=-1;
+        adjacencyList[currentSink][superSourceInd].second=-1;
+
+        //_____*** MAX FLOW ***_____
+        bool augmentingPathFound = true;
+        vector<int> parents(n + 1);
+        vector<bool> isVisited(n + 1);
+
+        parents[superSourceInd] = -1;
+        queue<int> queueNetwork;
+
+        while (augmentingPathFound) {
+            augmentingPathFound = true;
+
+            //Cleaning
+            while (!queueNetwork.empty())
+                queueNetwork.pop();
+
+            isVisited.assign(n + 1, false);
+
+            queueNetwork.push(superSourceInd);
+            isVisited[superSourceInd] = true;
+
+            //  BFS
+            while (!queueNetwork.empty()) {
+                currentVertex=queueNetwork.front();
+                queueNetwork.pop();
+
+                for(int j=0;j<adjacencyList[currentSink].size();++j)
+                {
+                adjacencyList[currentSink][j].first
+
+                }
+
+
+
+            }
+
+        }
+
+
+
+
+
+
+
+
+        //adding back edge to currentSink
+        adjacencyList[superSourceInd][currentSink].second=INT_MAX;
+        adjacencyList[currentSink][superSourceInd].second=0;
+    }
+
+
+
+    fclose(fileIn);
+    fclose(fileOut);
+    return 0;
+}
